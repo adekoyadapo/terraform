@@ -1,0 +1,66 @@
+{
+  "builders": [
+    {
+      "CPUs": "{{user `vm-cpu-num`}}",
+      "RAM": "{{user `vm-mem-size`}}",
+      "RAM_reserve_all": false,
+      "boot_command": [
+        "<esc><wait>",
+        "linux ks=hd:fd0:/ks.cfg<enter>"
+      ],
+      "boot_order": "disk,cdrom,floppy",
+      "boot_wait": "10s",
+      "ip_wait_timeout": "1h5m2s",
+      "cluster": "{{user `vsphere-cluster`}}",
+      "convert_to_template": true,
+      "folder": "{{user `vsphere-template-folder`}}",
+      "datacenter": "{{user `vsphere-datacenter`}}",
+      "datastore": "{{user `vsphere-datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "floppy_files": [
+        "ks.cfg"
+      ],
+      "guest_os_type": "centos7_64Guest",
+      "insecure_connection": "true",
+      "iso_paths": [
+        "{{user `iso_url`}}"
+      ],
+      "network_adapters": [
+        {
+          "network": "{{user `vsphere-network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "notes": "Built with Packer",
+      "password": "{{user `vsphere-password`}}",
+      "ssh_password": "server",
+      "ssh_username": "root",
+      "storage": [
+        {
+          "disk_size": "{{user `vm-disk-size`}}",
+          "disk_thin_provisioned": true
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `vsphere-user`}}",
+      "vcenter_server": "{{user `vsphere-server`}}",
+      "vm_name": "{{user `vm-name`}}"
+    }
+  ],
+  "variables": {
+    "iso_url": "[NFS]ISO/CentOS-7-x86_64-DVD-2003.iso",
+    "vm-cpu-num": "2",
+    "vm-disk-size": "8192",
+    "vm-mem-size": "2048",
+    "vm-name": "CentOS7",
+    "vsphere-cluster": "Home-CS",
+    "vsphere-datacenter": "Home-DC",
+    "vsphere-datastore": "DATA",
+    "vsphere-folder": "TEMPLATES",
+    "vsphere-template-folder": "TEMPLATES",
+    "vsphere-network": "VM Network",
+    "vsphere-password": "password",
+    "vsphere-server": "vcenter6-7.ace.home",
+    "vsphere-user": "administrator@vsphere.local"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "vm-name": "ubuntu-cloudinit",
+  "vcenter-server":"vcenter6-7.ace.home",
+  "vcenter-username":"administrator@vsphere.local",
+  "vcenter-password":"password",
+  "datacenter": "Home-DC",
+  "datastore": "DATA",
+  "folder": "Templates",
+  "cluster": "Home-CS",
+  "network": "VM Network",
+  "vm-cpu-num": "1",
+  "vm-mem-size": "1024",
+  "vm-disk-size": "8096",
+  "ssh-username": "ansible",
+  "ssh-password": "ansible",
+  "iso-url": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.5-server-amd64.iso",
+  "iso-checksum": "8c5fc24894394035402f66f3824beb7234b757dd2b5531379cb310cedfdf0996",
+  "iso-checksum-type": "sha256"
+}
