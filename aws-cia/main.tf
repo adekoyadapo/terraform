@@ -72,8 +72,10 @@ resource "aws_instance" "amz-webserver" {
 
 output "pub_dns" {
   value = "${aws_eip.pub_static.public_dns}"
+  description = "EC2 Public DNS"
 }
 output "new_pub_address" {
   value = "${aws_eip.pub_static.public_ip}"
+  description = "EC2 Public IP"
 }
 

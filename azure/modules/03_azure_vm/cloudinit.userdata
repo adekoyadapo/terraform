@@ -1,0 +1,77 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - nginx
+  - curl
+write_files:
+  - owner: www-data:www-data
+    path: /etc/nginx/sites-available/default
+    content: |
+      server {
+        listen 80;
+        server_name ${admin_url};
+        listen 443 ssl;
+        ssl_certificate /etc/nginx/ssl/goodaction.cert;
+        ssl_certificate_key /etc/nginx/ssl/goodaction.prv;      
+        location / {
+          proxy_pass "http://127.0.0.1:${api_port}";
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+
+      server {
+        listen 80;
+        server_name ${frontend_url};
+        listen 443 ssl;
+        ssl_certificate /etc/nginx/ssl/goodaction.cert;
+        ssl_certificate_key /etc/nginx/ssl/goodaction.prv;      
+        location / {
+          proxy_pass "http://127.0.0.1:${frontend_port}";
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+      
+      server {
+        listen 80;
+        server_name ${admin_url};
+        listen 443 ssl;
+        ssl_certificate /etc/nginx/ssl/goodaction.cert;
+        ssl_certificate_key /etc/nginx/ssl/goodaction.prv;      
+        location / {
+          proxy_pass "http://127.0.0.1:${admin_port}";
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+      
+
+  - content: |
+      #!/bin/bash
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      source ~/.bashrc
+      nvm install v16.4.0 -g
+      npm install pm2@5.1.1 -g
+      echo "Port ${ssh_port}" | sudo tee -a /etc/ssh/sshd_config
+      systemctl restart sshd
+    path: /tmp/bootstrap.sh
+    permissions: 0755
+
+runcmd:
+  - secretsname=$(find /var/lib/waagent/ -name "*.prv" | cut -c -57)
+  - mkdir /etc/nginx/ssl
+  - cp $secretsname.crt /etc/nginx/ssl/goodaction.cert
+  - cp $secretsname.prv /etc/nginx/ssl/goodaction.prv
+  - service nginx restart
+  - /tmp/bootstrap.sh
+  - su - ${admin_username} -c /tmp/bootstrap.sh

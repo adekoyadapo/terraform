@@ -49,9 +49,11 @@ resource "aws_instance" "amz" {
 
 output "pub_address" {
   value = "${aws_instance.amz.public_ip}"
+  description = "EC2 Public Elastic IP"
 }
 output "priv_address" {
   value = "${aws_instance.amz.private_ip}"
+  description = "EC2 internal IP"
 }
 
 

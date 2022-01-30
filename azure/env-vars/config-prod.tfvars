@@ -1,0 +1,10 @@
+env               = "prod"
+cidr              = ["10.2.0.0/16"]
+subnets           = ["10.2.1.0/24"]
+vm_size           = "Standard_D4s_v5"
+ssh_port          = "2247"
+api_port          = "3000"
+admin_port        = "4000"
+frontend_port     = "5000"
+nodejs_version    = "16.4.0"
+pm2_version       = "5.1.1"
