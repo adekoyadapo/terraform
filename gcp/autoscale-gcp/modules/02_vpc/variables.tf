@@ -4,11 +4,11 @@ variable "cidr" {
 }
 
 variable "region" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }
 variable "tags" {
-  type        = list
+  type        = list(any)
   description = "Instance template network tags"
-  default = ["http"]
+  default     = ["http"]
 }

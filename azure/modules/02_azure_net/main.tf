@@ -3,10 +3,10 @@ resource "azurerm_virtual_network" "main" {
   address_space       = var.cidr
   location            = var.location
   resource_group_name = var.group_name
-  tags                = {
-                         environment = var.env
-                         project     = var.appName
-                        }
+  tags = {
+    environment = var.env
+    project     = var.appName
+  }
 }
 
 resource "azurerm_subnet" "main" {

@@ -14,8 +14,8 @@ data "azurerm_key_vault" "vault" {
 }
 
 data "azurerm_key_vault_certificate" "cert" {
-  name               = var.cert_name
-  key_vault_id       = data.azurerm_key_vault.vault.id
+  name         = var.cert_name
+  key_vault_id = data.azurerm_key_vault.vault.id
 
 }
 
@@ -29,17 +29,17 @@ data "template_file" "vm_userdata" {
   template = file("${path.module}/cloudinit.userdata")
 
   vars = {
-    admin_username      = var.admin_username
-    nodejs_version      = var.nodejs_version
-    pm2_version         = var.pm2_version
-    pubkey              = tls_private_key.ssh.public_key_openssh
-    ssh_port            = var.ssh_port
-    admin_url           = "${var.admin_url}-${var.random_string}.goodaction.com"
-    api_url             = "${var.api_url}-${var.random_string}.goodaction.com"
-    frontend_url        = "${var.frontend_url}-${var.random_string}.goodaction.com"
-    api_port            = var.api_port
-    admin_port          = var.admin_port
-    frontend_port       = var.frontend_port
+    admin_username = var.admin_username
+    nodejs_version = var.nodejs_version
+    pm2_version    = var.pm2_version
+    pubkey         = tls_private_key.ssh.public_key_openssh
+    ssh_port       = var.ssh_port
+    admin_url      = "${var.admin_url}-${var.random_string}.goodaction.com"
+    api_url        = "${var.api_url}-${var.random_string}.goodaction.com"
+    frontend_url   = "${var.frontend_url}-${var.random_string}.goodaction.com"
+    api_port       = var.api_port
+    admin_port     = var.admin_port
+    frontend_port  = var.frontend_port
   }
 }
 
@@ -83,16 +83,16 @@ resource "azurerm_linux_virtual_machine" "vm" {
   secret {
     key_vault_id = data.azurerm_key_vault.vault.id
     certificate {
-     url    = data.azurerm_key_vault_certificate.cert.secret_id
-     }
+      url = data.azurerm_key_vault_certificate.cert.secret_id
+    }
   }
- 
+
   depends_on = [tls_private_key.ssh]
 
-  tags         = {
-                  environment = var.env
-                  project     = var.appName
-            }
+  tags = {
+    environment = var.env
+    project     = var.appName
+  }
 }
 resource "local_file" "sshadmin_pem" {
   content         = tls_private_key.ssh.private_key_pem
@@ -102,13 +102,13 @@ resource "local_file" "sshadmin_pem" {
 }
 
 resource "azurerm_key_vault_secret" "admin_pem" {
-  name         = "${var.admin_username}"
+  name         = var.admin_username
   value        = tls_private_key.ssh.private_key_pem
   key_vault_id = data.azurerm_key_vault.vault.id
 
-  tags         = {
-                  environment = var.env
-                  project     = var.appName
-            }
+  tags = {
+    environment = var.env
+    project     = var.appName
+  }
 
 }

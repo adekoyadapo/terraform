@@ -1,9 +1,9 @@
 resource "random_id" "id" {
   byte_length = 4
   prefix      = "vpc-"
-  }
+}
 resource "google_compute_network" "vpc_network" {
-  name    = random_id.id.hex
+  name = random_id.id.hex
 }
 resource "google_compute_subnetwork" "public-subnetwork" {
   name          = "${random_id.id.hex}-subnetwork"
@@ -18,8 +18,8 @@ resource "google_compute_firewall" "fw" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22","80","443"]
-         }
-   source_ranges = ["0.0.0.0/0"]
-   target_tags = "${var.tags}"
+    ports    = ["22", "80", "443"]
+  }
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = var.tags
 }

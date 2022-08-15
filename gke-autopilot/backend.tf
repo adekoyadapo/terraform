@@ -1,6 +1,6 @@
 terraform {
- backend "gcs" {
-   bucket  = "sada-ade-admin-proj"
-   prefix  = "terraform-proj/state/buildkite_autpilot_tfstate"
- }
+  backend "gcs" {
+    bucket = "sada-ade-admin-proj"
+    prefix = "terraform-proj/state/buildkite_autpilot_tfstate"
+  }
 }

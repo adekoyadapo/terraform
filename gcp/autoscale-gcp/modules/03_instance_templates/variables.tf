@@ -3,9 +3,9 @@ variable "project_name" {
   description = "Project name"
 }
 variable "tags" {
-  type        = list
+  type        = list(any)
   description = "Instance template network tags"
-  default = ["http"]
+  default     = ["http"]
 }
 variable "machine_type" {
   type        = string
@@ -13,16 +13,16 @@ variable "machine_type" {
   default     = "f1-micro"
 }
 variable "image" {
-  type = string
+  type        = string
   description = "template Image"
-  default = "debian-cloud/debian-9"
+  default     = "debian-cloud/debian-9"
 }
 variable "network" {
-  type = string
+  type        = string
   description = "VPC to use"
 }
 variable "subnetwork" {
-  type = string
+  type        = string
   description = "Subnet to use"
 }
 variable "labels" {
@@ -33,23 +33,23 @@ variable "labels" {
   }
 }
 variable "image_family" {
-  type = string
+  type        = string
   description = "GCE image family"
 }
 variable "image_project" {
-  type = string
+  type        = string
   description = "GCE image project"
 }
 variable "bucket_id" {
-  type = string
+  type        = string
   description = "Storage for startup script"
 }
 variable "rolesList" {
-  type = list
+  type        = list(any)
   description = "List of roles required by the build agent"
-  default = ["roles/storage.objectViewer"]
+  default     = ["roles/storage.objectViewer"]
 }
 variable "zone" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }

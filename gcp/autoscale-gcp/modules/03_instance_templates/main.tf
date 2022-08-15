@@ -1,15 +1,15 @@
 resource "random_id" "id" {
   byte_length = 2
-  }
+}
 resource "google_service_account" "sa" {
   account_id   = "service-account-${random_id.id.hex}"
   display_name = "Service Account Compute"
 }
 
 resource "google_project_iam_binding" "sa_iam" {
-  count = length(var.rolesList)
+  count   = length(var.rolesList)
   project = var.project_name
-  role =  var.rolesList[count.index]
+  role    = var.rolesList[count.index]
   members = [
     "serviceAccount:${google_service_account.sa.email}",
   ]
@@ -25,12 +25,12 @@ data "google_compute_image" "image" {
 }
 
 resource "google_compute_instance_template" "template" {
-  depends_on = [time_sleep.wait]
-  provider = google-beta
+  depends_on  = [time_sleep.wait]
+  provider    = google-beta
   name        = "template-${random_id.id.hex}"
   description = "This template is used to create server instances."
 
-  tags = "${var.tags}"
+  tags = var.tags
 
   labels = var.labels
 
@@ -45,18 +45,18 @@ resource "google_compute_instance_template" "template" {
 
   // Create a new boot disk from an image
   disk {
-    source_image      = data.google_compute_image.image.self_link
-    auto_delete       = true
-    boot              = true
-    disk_type         = "pd-ssd"
-    disk_size_gb      = 10
+    source_image = data.google_compute_image.image.self_link
+    auto_delete  = true
+    boot         = true
+    disk_type    = "pd-ssd"
+    disk_size_gb = 10
   }
 
   network_interface {
-    network = var.network
+    network    = var.network
     subnetwork = var.subnetwork
-  access_config {
-    network_tier = "STANDARD"
+    access_config {
+      network_tier = "STANDARD"
     }
   }
 
@@ -75,9 +75,9 @@ resource "google_compute_instance_template" "template" {
 }
 
 resource "google_compute_instance_group_manager" "instance_group_manager" {
-  name               = "igm-${random_id.id.hex}"
+  name = "igm-${random_id.id.hex}"
   version {
-    instance_template  = google_compute_instance_template.template.id
+    instance_template = google_compute_instance_template.template.id
   }
   base_instance_name = "bin-${random_id.id.hex}"
   zone               = var.zone
@@ -86,9 +86,9 @@ resource "google_compute_instance_group_manager" "instance_group_manager" {
 
 resource "google_compute_autoscaler" "autoscale" {
   provider = google-beta
-  name   = "autoscaler-${random_id.id.hex}"
-  zone   = var.zone
-  target = google_compute_instance_group_manager.instance_group_manager.id
+  name     = "autoscaler-${random_id.id.hex}"
+  zone     = var.zone
+  target   = google_compute_instance_group_manager.instance_group_manager.id
 
   autoscaling_policy {
     max_replicas    = 5
@@ -98,7 +98,7 @@ resource "google_compute_autoscaler" "autoscale" {
     metric {
       name   = "custom.googleapis.com/appdemo_queue_depth_01"
       target = "150"
-      type   = "GAUGE"     
+      type   = "GAUGE"
     }
   }
 }

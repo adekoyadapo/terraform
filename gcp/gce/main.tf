@@ -1,5 +1,5 @@
 data "google_project" "project_info" {
-  provider = google    
+  provider = google
 }
 
 resource "google_project_service" "service" {
@@ -12,8 +12,8 @@ resource "google_project_service" "service" {
     "serviceusage.googleapis.com",
     "logging.googleapis.com"
   ])
-    service = each.key
-    disable_on_destroy = false
+  service            = each.key
+  disable_on_destroy = false
 }
 
 resource "tls_private_key" "ssh" {
@@ -28,7 +28,7 @@ data "google_compute_image" "image" {
 
 resource "random_id" "id" {
   byte_length = 4
-  }
+}
 
 resource "local_file" "sshadmin_pem" {
   content         = tls_private_key.ssh.private_key_pem
@@ -37,10 +37,10 @@ resource "local_file" "sshadmin_pem" {
   file_permission = "0600"
 }
 
-data google_client_openid_userinfo me{
+data "google_client_openid_userinfo" "me" {
 }
 
-data google_project "project_id"{
+data "google_project" "project_id" {
 }
 
 resource "google_service_account" "sa" {
@@ -49,38 +49,38 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_binding" "sa_iam" {
-  count = length(var.rolesList)
+  count   = length(var.rolesList)
   project = data.google_project.project_id.project_id
-  role =  var.rolesList[count.index]
+  role    = var.rolesList[count.index]
   members = [
     "serviceAccount:${google_service_account.sa.email}",
   ]
 }
 
 resource "google_compute_instance" "vm" {
-  depends_on   = [google_compute_address.static,google_storage_bucket.bucket]
+  depends_on   = [google_compute_address.static, google_storage_bucket.bucket]
   name         = "vm-${random_id.id.hex}"
   machine_type = var.machine_type
   zone         = var.zone
 
-  tags = "${var.tags}"
+  tags = var.tags
 
   boot_disk {
     initialize_params {
       image = data.google_compute_image.image.self_link
-      type = "pd-standard"
+      type  = "pd-standard"
     }
   }
   network_interface {
     network = google_compute_network.vpc_network.name
 
-  access_config {
+    access_config {
       nat_ip = google_compute_address.static.address
     }
   }
 
   metadata = {
-    ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${tls_private_key.ssh.public_key_openssh}"
+    ssh-keys           = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${tls_private_key.ssh.public_key_openssh}"
     startup-script-url = "gs://${google_storage_bucket.bucket.name}/buildkite.sh"
   }
 

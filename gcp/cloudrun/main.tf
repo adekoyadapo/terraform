@@ -5,10 +5,10 @@ resource "google_project_service" "run_api" {
 }
 
 resource "random_id" "id" {
-  depends_on = [google_project_service.run_api]
+  depends_on  = [google_project_service.run_api]
   byte_length = 4
   prefix      = "cloudrun-"
-  }
+}
 
 resource "google_cloud_run_service_iam_member" "allUsers" {
   service  = google_cloud_run_service.service.name
@@ -18,9 +18,9 @@ resource "google_cloud_run_service_iam_member" "allUsers" {
 }
 
 resource "google_cloud_run_service" "service" {
-  name      = random_id.id.hex
-  location  = var.region
-  project   = var.project_id
+  name     = random_id.id.hex
+  location = var.region
+  project  = var.project_id
   template {
     spec {
       container_concurrency = 250
@@ -28,14 +28,14 @@ resource "google_cloud_run_service" "service" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
         resources {
           limits = {
-              memory = "128Mi"
+            memory = "128Mi"
           }
         }
       }
     }
     metadata {
       annotations = {
-        "autoscaling.knative.dev/maxScale"      = "10"
+        "autoscaling.knative.dev/maxScale" = "10"
       }
     }
   }

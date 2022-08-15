@@ -6,9 +6,9 @@ terraform {
 
 locals {
   domain  = "[domain]"  // Your Domain Name
-  project = "[project]"     // Your GCP project
-  region  = "[region]" // Your Region
-  env     = "dev"         // Your environment
+  project = "[project]" // Your GCP project
+  region  = "[region]"  // Your Region
+  env     = "dev"       // Your environment
 
   // Backend Services
   services = [
@@ -35,18 +35,18 @@ locals {
 
 
 module "lb-http" {
-  depends_on = [tls_private_key.example, tls_self_signed_cert.example]
-  source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 6.1.1"
-  name    = replace("${local.env}-${local.domain}", ".", "-")
-  project = local.project
+  depends_on  = [tls_private_key.example, tls_self_signed_cert.example]
+  source      = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
+  version     = "~> 6.1.1"
+  name        = replace("${local.env}-${local.domain}", ".", "-")
+  project     = local.project
   private_key = tls_private_key.example.private_key_pem
   certificate = tls_self_signed_cert.example.cert_pem
-  ssl                             = true
+  ssl         = true
   #managed_ssl_certificate_domains = ["${local.env}.${local.domain}"]
-  https_redirect                  = true
-  create_url_map                  = false
-  url_map                         = google_compute_url_map.url-map.self_link
+  https_redirect = true
+  create_url_map = false
+  url_map        = google_compute_url_map.url-map.self_link
 
   backends = {
     for serviceObj in local.services :

@@ -1,18 +1,18 @@
 variable "resource_group_name" {
-    type = string
-    default = "goodactiondev"
+  type    = string
+  default = "goodactiondev"
 }
 variable "location" {
-    type = string
-    default = "eastus"
+  type    = string
+  default = "eastus"
 }
 
 variable "pub_ip_id" {
-  
+
 }
-variable subdomains {
+variable "subdomains" {
 }
 variable "resource_group_name_dns" {
-    type = string
-    default = "Goodaction-Prod-Sec"
+  type    = string
+  default = "Goodaction-Prod-Sec"
 }

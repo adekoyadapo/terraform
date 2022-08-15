@@ -32,15 +32,15 @@ variable "ip_range_services_name" {
   default     = "ip-range-scv"
 }
 variable "credentials_file" {
-  type           = string
-  description    = "credentials file location" 
+  type        = string
+  description = "credentials file location"
 }
 variable "rolesList" {
-  type = list
+  type        = list(any)
   description = "List of roles required by the build agent"
-  default = ["roles/storage.objectViewer"]
+  default     = ["roles/storage.objectViewer"]
 }
 variable "zone" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }

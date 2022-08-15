@@ -35,3 +35,8 @@ terraform.rc
 *.pem
 *.yaml
 *.tools-versions
+
+.DS_Store
+.terraform
+.infracost
+.tfvars

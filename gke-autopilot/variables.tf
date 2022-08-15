@@ -4,23 +4,23 @@ variable "cidr" {
 }
 
 variable "region" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }
 
 variable "credentials_file" {
-  type           = string
-  description    = "credentials file location" 
+  type        = string
+  description = "credentials file location"
 }
 
 variable "zone" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }
 variable "project_id" {
-  type           = string
-  description    = "Project id"
-  default        = ""
+  type        = string
+  description = "Project id"
+  default     = ""
 }
 variable "labels" {
   type = map(string)

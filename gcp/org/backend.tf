@@ -1,6 +1,6 @@
 terraform {
- backend "gcs" {
-   bucket  = "dummy-admin-proj"
-   prefix  = "terraform-proj/state/admin_tfstate"
- }
+  backend "gcs" {
+    bucket = "<bucket_name>"
+    prefix = "<prefix>"
+  }
 }

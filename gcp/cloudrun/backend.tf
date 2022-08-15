@@ -1,6 +1,6 @@
 terraform {
- backend "gcs" {
-   bucket  = "<backend>"
-   prefix  = "<prefix>"
- }
+  backend "gcs" {
+    bucket = "<backend>"
+    prefix = "<prefix>"
+  }
 }

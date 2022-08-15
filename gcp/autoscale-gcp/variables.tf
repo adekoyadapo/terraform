@@ -3,41 +3,41 @@ variable "url" {
   description = "github url"
 }
 variable "credentials_file" {
-  type           = string
-  description    = "credentials file location" 
+  type        = string
+  description = "credentials file location"
 }
 variable "region" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }
 variable "zone" {
-  type           = string
-  description    = "Project location" 
+  type        = string
+  description = "Project location"
 }
 variable "project_name" {
-  type           = string
-  description    = "Project name"
-  default        = ""
+  type        = string
+  description = "Project name"
+  default     = ""
 }
 variable "bucket_name" {
-  type           = string
-  description    = "GCS bucket for artifacts name"
-  default        = ""
+  type        = string
+  description = "GCS bucket for artifacts name"
+  default     = ""
 }
 
 variable "org_id" {
-  type           = string
-  description    = "org/folder id"
-  default        = ""
+  type        = string
+  description = "org/folder id"
+  default     = ""
 }
 variable "cidr" {
   type        = string
   description = "subnet block"
 }
 variable "tags" {
-  type        = list
+  type        = list(any)
   description = "Instance template network tags"
-  default = ["http"]
+  default     = ["http"]
 }
 variable "labels" {
   type = map(string)
@@ -52,30 +52,30 @@ variable "machine_type" {
   default     = "f1-micro"
 }
 variable "network" {
-  type = string
+  type        = string
   description = "VPC to use"
-  default = "default"
+  default     = "default"
 }
 variable "subnetwork" {
-  type = string
+  type        = string
   description = "Subnet to use"
   default     = "default"
 }
 variable "bucket_id" {
-  type = string
+  type        = string
   description = "Storage for startup script"
-  default = ""
+  default     = ""
 }
 variable "image_family" {
-  type = string
+  type        = string
   description = "GCE image family"
 }
 variable "image_project" {
-  type = string
+  type        = string
   description = "GCE image project"
 }
 variable "rolesList" {
-  type = list
+  type        = list(any)
   description = "List of roles required by the build agent"
-  default = ["roles/storage.objectViewer"]
+  default     = ["roles/storage.objectViewer"]
 }

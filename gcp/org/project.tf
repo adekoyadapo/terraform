@@ -8,7 +8,7 @@ resource "google_project" "project" {
   project_id      = random_id.id.hex
   billing_account = var.billing_account
   folder_id       = var.folder_id
-#  org_id          = var.org_id
+  #  org_id          = var.org_id
 }
 
 resource "google_project_service" "service" {

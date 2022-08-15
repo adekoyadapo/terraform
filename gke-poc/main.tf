@@ -47,24 +47,24 @@ module "gke" {
   ip_range_pods          = var.ip_range_pods_name
   ip_range_services      = var.ip_range_services_name
   create_service_account = false
-#  service_account        = "${google_service_account.sa.email}"
+  #  service_account        = "${google_service_account.sa.email}"
   horizontal_pod_autoscaling = true
-  remove_default_node_pool    = true
+  remove_default_node_pool   = true
   node_pools = [
     {
-      name                      = "node-pool-01"
-      machine_type              = "n1-standard-2"
-      min_count                 = 1
-      max_count                 = 5
-      local_ssd_count           = 0
-      disk_size_gb              = 20
-      disk_type                 = "pd-standard"
-      image_type                = "COS_CONTAINERD"
-      auto_repair               = false
-      auto_upgrade              = true
-  #    service_account           = "${google_service_account.sa.email}"
-      preemptible               = false
-      initial_node_count        = 1
+      name            = "node-pool-01"
+      machine_type    = "n1-standard-2"
+      min_count       = 1
+      max_count       = 5
+      local_ssd_count = 0
+      disk_size_gb    = 20
+      disk_type       = "pd-standard"
+      image_type      = "COS_CONTAINERD"
+      auto_repair     = false
+      auto_upgrade    = true
+      #    service_account           = "${google_service_account.sa.email}"
+      preemptible        = false
+      initial_node_count = 1
     },
   ]
   node_pools_oauth_scopes = {
@@ -74,7 +74,7 @@ module "gke" {
 
 
 module "gke_auth" {
-  source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+  source       = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   depends_on   = [module.gke]
   project_id   = var.project_id
   location     = var.region
@@ -82,6 +82,10 @@ module "gke_auth" {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = module.gke_auth.kubeconfig_raw
-  filename = "kubeconfig-${random_id.id.hex}.config"
+  depends_on = [
+    module.gke_auth
+  ]
+  content         = module.gke_auth.kubeconfig_raw
+  filename        = "kubeconfig-${random_id.id.hex}.config"
+  file_permission = 600
 }
