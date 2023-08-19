@@ -1,0 +1,4 @@
+region = "ca-central-1"
+api_path = "api/json"
+cidr = "10.1.0.0/16"
+azs = ["a", "b"] # note some Availability zones in AWS might be missing some alphabets, check first before updating this

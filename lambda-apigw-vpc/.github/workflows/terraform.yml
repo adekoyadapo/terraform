@@ -1,0 +1,36 @@
+name: Terraform Format and Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    format_and_validate:
+      runs-on: ubuntu-latest
+  
+      strategy:
+        matrix:
+          working-directory: ['backend', './']
+  
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+  
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+  
+      - name: Format Terraform code
+        run: terraform fmt -check -recursive ${{ matrix.working-directory }}
+        continue-on-error: true
+
+      - name: Initialize Terraform
+        run: terraform -chdir=${{ matrix.working-directory }} init
+
+      - name: Validate Terraform code
+        run: terraform -chdir=${{ matrix.working-directory }} validate
