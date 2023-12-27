@@ -46,7 +46,8 @@ elif [ "$1" = "destroy" ]; then
 
   terraform -chdir=backend destroy
 
-  rm -rf .terraform 0-backend.tf builds .terraform.lock.hcl
+  rm -rf .terraform 0-backend.tf builds .terraform.lock.hcl backend/.terraform backend/terraform.tfstate*
+
   echo
   echo -e "Cleanup completed"
 
